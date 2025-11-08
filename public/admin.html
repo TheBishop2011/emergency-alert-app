@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Emergency Alert System</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="admin-container">
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <nav class="admin-nav">
+            <div class="nav-brand">
+                <h1><i class="fas fa-shield-alt"></i> SafetyFirst Admin</h1>
+                <span class="admin-subtitle">Emergency Alert System Dashboard</span>
+            </div>
+            <div class="admin-nav-actions">
+                <div class="admin-info">
+                    <span id="adminWelcome">Loading...</span>
+                    <span class="admin-role" id="adminRole">Administrator</span>
+                </div>
+                <button id="refreshData" class="btn-secondary">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <button id="adminLogout" class="btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Admin Content -->
+    <main class="admin-main">
+        <!-- Statistics Overview -->
+        <section class="stats-section">
+            <h2 class="section-title"><i class="fas fa-chart-bar"></i> Dashboard Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card critical">
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number" id="activeAlerts">0</span>
+                        <span class="stat-label">Active Emergencies</span>
+                        <span class="stat-trend" id="activeTrend">+0 today</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number" id="totalAlerts">0</span>
+                        <span class="stat-label">Total Alerts Today</span>
+                        <span class="stat-trend" id="totalTrend">+0% from yesterday</span>
+                    </div>
+                </div>
+                <div class="stat-card warning">
+                    <div class="stat-icon">
+                        <i class="fas fa-ambulance"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number" id="respondedAlerts">0</span>
+                        <span class="stat-label">Being Responded To</span>
+                        <span class="stat-trend" id="respondedTrend">Avg. response: --:--</span>
+                    </div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number" id="resolvedAlerts">0</span>
+                        <span class="stat-label">Resolved Incidents</span>
+                        <span class="stat-trend" id="resolvedTrend">+0 today</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emergency Type Distribution -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-chart-pie"></i> Emergency Type Distribution</h2>
+            </div>
+            <div class="emergency-types-distribution">
+                <div class="type-item medical">
+                    <i class="fas fa-hospital"></i>
+                    <span class="type-label">Medical</span>
+                    <span class="type-count" id="medicalCount">0</span>
+                </div>
+                <div class="type-item fire">
+                    <i class="fas fa-fire"></i>
+                    <span class="type-label">Fire</span>
+                    <span class="type-count" id="fireCount">0</span>
+                </div>
+                <div class="type-item police">
+                    <i class="fas fa-shield-alt"></i>
+                    <span class="type-label">Police</span>
+                    <span class="type-count" id="policeCount">0</span>
+                </div>
+                <div class="type-item accident">
+                    <i class="fas fa-car-crash"></i>
+                    <span class="type-label">Accident</span>
+                    <span class="type-count" id="accidentCount">0</span>
+                </div>
+                <div class="type-item other">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span class="type-label">Other</span>
+                    <span class="type-count" id="otherCount">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alerts Management Section -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-list-alt"></i> Emergency Alerts Management</h2>
+                <div class="section-actions">
+                    <button class="btn-secondary" id="exportBtn">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                    <button class="btn-primary" id="clearFiltersBtn">
+                        <i class="fas fa-filter"></i> Clear Filters
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-container">
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="statusFilter"><i class="fas fa-filter"></i> Status</label>
+                        <select id="statusFilter">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="responded">Responded</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="false-alarm">False Alarm</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="typeFilter"><i class="fas fa-filter"></i> Emergency Type</label>
+                        <select id="typeFilter">
+                            <option value="">All Types</option>
+                            <option value="medical">Medical</option>
+                            <option value="fire">Fire</option>
+                            <option value="police">Police</option>
+                            <option value="accident">Accident</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="dateFrom"><i class="fas fa-calendar"></i> From Date</label>
+                        <input type="datetime-local" id="dateFrom">
+                    </div>
+                    <div class="filter-group">
+                        <label for="dateTo"><i class="fas fa-calendar"></i> To Date</label>
+                        <input type="datetime-local" id="dateTo">
+                    </div>
+                    <div class="filter-group">
+                        <label for="searchInput"><i class="fas fa-search"></i> Search</label>
+                        <input type="text" id="searchInput" placeholder="Search alerts...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerts Table -->
+            <div class="table-container">
+                <table class="alerts-table">
+                    <thead>
+                        <tr>
+                            <th>User Information</th>
+                            <th>Emergency Type</th>
+                            <th>Time Reported</th>
+                            <th>Status</th>
+                            <th>Location</th>
+                            <th>Response Time</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="alertsTableBody">
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                <div class="empty-content">
+                                    <i class="fas fa-inbox"></i>
+                                    <h3>No Alerts Found</h3>
+                                    <p>No emergency alerts match your current filters.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    Showing <span id="showingStart">0</span>-<span id="showingEnd">0</span> of <span id="totalRecords">0</span> alerts
+                </div>
+                <div id="pagination" class="pagination"></div>
+            </div>
+        </section>
+
+        <!-- Quick Actions Section -->
+        <section class="admin-section">
+            <h2 class="section-title"><i class="fas fa-bolt"></i> Quick Actions</h2>
+            <div class="quick-actions-grid">
+                <div class="action-card" onclick="adminDashboard.sendTestAlert()">
+                    <div class="action-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Test Alert</h3>
+                        <p>Send a test emergency alert</p>
+                    </div>
+                </div>
+                <div class="action-card" onclick="adminDashboard.generateReport()">
+                    <div class="action-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Generate Report</h3>
+                        <p>Create detailed analytics report</p>
+                    </div>
+                </div>
+                <div class="action-card" onclick="adminDashboard.manageUsers()">
+                    <div class="action-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Manage Users</h3>
+                        <p>View and manage system users</p>
+                    </div>
+                </div>
+                <div class="action-card" onclick="adminDashboard.systemSettings()">
+                    <div class="action-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>System Settings</h3>
+                        <p>Configure system preferences</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Activity Section -->
+        <section class="admin-section">
+            <h2 class="section-title"><i class="fas fa-history"></i> Recent Activity</h2>
+            <div class="activity-feed" id="activityFeed">
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p>System initialized. Waiting for activity...</p>
+                        <span class="activity-time">Just now</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Alert Details Modal -->
+    <div id="alertDetailsModal" class="modal-overlay hidden">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-info-circle"></i> Alert Details</h3>
+                <button class="btn-close" onclick="adminDashboard.closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="alertDetailsContent">
+                <!-- Alert details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="adminDashboard.closeModal()">Close</button>
+                <button class="btn-primary" onclick="adminDashboard.printAlertDetails()">
+                    <i class="fas fa-print"></i> Print
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

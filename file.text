@@ -1,0 +1,26 @@
+emergency-alert-app/
+├── public/
+│   ├── index.html          # Main User App (SOS, Map, Chatbot)
+│   ├── admin.html          # Admin Dashboard
+│   ├── css/
+│   │   ├── style.css       # User app styles
+│   │   └── admin.css       # Admin panel styles
+│   └── js/
+│       ├── script.js       # User app logic (Map, UI)
+│       ├── chatbot-ui.js   # Handles chatbot frontend logic
+│       ├── admin.js        # Admin panel logic
+│       └── auth.js         # Handles login/logout
+├── server/
+│   ├── server.js           # Main server file (Express.js)
+│   ├── models/
+│   │   ├── User.js         # User data model
+│   │   └── Alert.js        # Alert/Incident data model
+│   ├── routes/
+│   │   ├── auth.js         # Authentication routes
+│   │   ├── alerts.js       # Alert management routes
+│   │   └── chatbot.js      # API endpoint for AI chatbot
+│   └── utils/
+│       └── notifications.js# Helper for sending FCM messages
+├── .env                    # Environment variables (API Keys)
+├── package.json
+└── README.md
